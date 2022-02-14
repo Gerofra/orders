@@ -31,7 +31,7 @@ public class CreateAdmin implements CommandLineRunner {
 				
 		
 		// ASIGNO ROL ADINISTRADOR	
-		/*
+	
 		Usuario usuario = new Usuario();
 		String encriptada = new BCryptPasswordEncoder().encode("admin");
 		
@@ -50,7 +50,7 @@ public class CreateAdmin implements CommandLineRunner {
 		usuario.setRoles(roles);
 		
 		usuarioRepo.save(usuario);
-		*/
+	
 		
 		/*
 		Usuario usuario = new Usuario();

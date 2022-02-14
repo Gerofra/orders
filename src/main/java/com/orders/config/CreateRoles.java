@@ -18,13 +18,13 @@ public class CreateRoles implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		// AGREGAN LOS ROLES A LA BASE DE DATOS A TRAVES DE LINEA DE COMANDO
-		Rol rolAdmin = new Rol(RolEnum.ROLE_ADMIN);
-		Rol rolUser = new Rol(RolEnum.ROLE_USER);
-		
-		rolService.save(rolAdmin);
-		rolService.save(rolUser);
-		
-		
+//		Rol rolAdmin = new Rol(RolEnum.ROLE_ADMIN);
+//		Rol rolUser = new Rol(RolEnum.ROLE_USER);
+//		
+//		rolService.save(rolAdmin);
+//		rolService.save(rolUser);
+//		
+//		
 		/*
 		Rol rolMod = new Rol(RolEnum.ROLE_MOD);
 		rolService.save(rolMod);
