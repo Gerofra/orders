@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pedidos</title>
+        <link rel="stylesheet" href="../css/login.css">
+        <link rel="stylesheet" href="../css/portal.css">
+    </head>
+    <body>
+
+
+
+        <div class="topnav">
+            <div id="leftNav">
+                <div class="helloMsg"><a href="/" th:if="${session.usuariosession != null}" th:text="${'¡Hola, ' + session.usuariosession.name + '!'}"></a></div>
+            </div>
+
+            <a href="javascript:void(0);" class="icon" onclick="mobileNav()">
+                <p id="burga">|||</p>
+            </a>
+
+            <div id="myLinks">
+                <div><a href="/orders">Pedidos</a></div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/products">Productos</a></div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users">Usuarios</a></div>
+                <div><span class='highlight'><a href="/logout">Salir</a></span></div>
+            </div>
+        </div>
+
+
+        <div class='container'>
+            <div class='window-main'>
+
+                <div class="menu">
+                    <div class="pages">
+                        <div><a href="/portal" th:if="${session.usuariosession != null}" th:text="${'¡Hola, ' + session.usuariosession.name + '!'}"></a></div>
+                        <div><a href="/orders">Pedidos</a></div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/products">Productos</a></div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users">Usuarios</a></div>
+
+                    </div>
+
+                    <div><span class='highlight'><a href="/logout">Salir</a></span></div>
+                </div>
+
+                <div class='content'>
+
+                    <div class="portada-buscador">
+                        <div class='welcome'>
+                            Pedidos
+                        </div>
+
+
+                        <div class="">
+                            <form class="search-box" th:action="@{/orders}" method="GET" style="margin:auto;max-width:300px">
+                                <input type="text" placeholder="Buscar pedido..." name="q">
+                                <button type="submit"><img src="../img/search.png" style="width: 16px"></img></button>
+                            </form>
+                        </div>
+                    </div>
+
+                    
+                    <span th:classappend="${orders.isEmpty} ? errorMsg : displayNone">No se han encontrado pedidos para la solicitud realizada.</span>
+                    <span th:classappend="${error} ? errorMsg : displayNone" th:text="${error}"></span>
+                    <span th:classappend="${success} ? successMsg : displayNone" th:text="${success}"></span>
+
+
+                    <div th:classappend="${productosPedido} ? show-order : displayNone">
+
+                        <div th:if="${infoPedido != null}">
+
+                            <div style="width:100%" class="panel-pedido">
+                                <div style="display:flex; flex-wrap: nowrap;">
+                                    <p style="font-size:1.4em; line-height: 0px;">Detalle</p>
+                                    <div>
+                                        <span class="estado-pedido" th:if="${infoPedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_ACTIVO}">(No entregado)</span>
+                                        <span class="estado-pedido" th:if="${infoPedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_REVISION}">(Pedido en revisión)</span>
+                                        <span class="estado-pedido" th:if="${infoPedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_CERRADO}">(Pedido entregado)</span>	                                
+                                    </div>
+                                </div>
+
+
+                                <div style="display:flex; flex-wrap:nowrap;">
+
+                                    <a class="panel-button red" th:if="${infoPedido.getEstado() != T(com.orders.enums.PedidoEnum).PEDIDO_CERRADO}" th:href="@{/orders/delete} + '?id=' + ${infoPedido.id}">Eliminar</a>
+
+                                    <form th:action="@{/orders}" method="POST">
+                                        <input type="hidden" name="id" th:value="${infoPedido.id}"></input>	 
+                                        <input type="hidden" name="estado" th:value="cerrado"></input>
+                                        <div th:if="${infoPedido.fechaEntrega == null}" sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <button type="submit" class='panel-button green'>Entregado</button> 							   
+                                        </div> 
+                                    </form>
+
+
+                                    <form th:action="@{/orders}" method="POST" th:if="${infoPedido.getEstado() != T(com.orders.enums.PedidoEnum).PEDIDO_REVISION}">
+                                        <input type="hidden" name="id" th:value="${infoPedido.id}"></input>	
+                                        <input type="hidden" name="estado" th:value="revision"></input> 
+                                        <div th:if="${infoPedido.fechaEntrega == null}" sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <button type="submit" class='panel-button yellow'>Revisión</button> 							   
+                                        </div> 
+                                    </form>		                
+
+
+                                    <a class="panel-button" th:href="@{'/orders'}">(X)</a>                                    
+
+                                </div>
+                            </div>
+
+                            <div style="width:50%">Pedido por: <strong><span  th:text="${infoPedido.usuario.name + ' ' + infoPedido.usuario.lastname}"></span></strong></div>
+                            <div>
+                                Pedido: <strong><span th:text="${#dates.format(infoPedido.fechaPedido, 'dd-MM-yyyy')}"></span></strong>
+                                <div style="display:inline;"  th:if="${infoPedido.fechaEntrega != null}"> | Entregado: <strong><span th:text="${#dates.format(infoPedido.fechaEntrega, 'dd-MM-yyyy')}"></span></strong></div>
+                            </div>
+
+                            <div style="width:50%">ID: <strong><span th:text="${infoPedido.id}"></span></strong></div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nombre</th>
+                                        <th>Marca</th>
+                                        <th>Cant.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>				        	
+                                    <tr th:each="producto, iter : ${productosPedido}">
+                                        <td>-</td>
+                                        <td><span th:text="${producto.key.nombre}"></span></td>
+                                        <td><span th:text="${producto.key.marca}"></span></td>
+                                        <td><span th:text="${producto.value}"></span></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <div class="order" th:each="pedido, iter : ${orders}" th:classappend="|${pedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_ACTIVO ? 'success' : ''} ${pedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_CERRADO ? 'danger' : ''} ${pedido.getEstado() == T(com.orders.enums.PedidoEnum).PEDIDO_REVISION ? 'warning' : ''}|">
+
+                        <form class="form-order" th:action="@{/orders}" method="POST">
+
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></input>
+                            <input type="hidden" name="id" th:value="${pedido.id}"></input>	 
+
+
+                            <div style="width:50%">Pedido por: <strong><span th:text="${pedido.usuario.name + ' ' + pedido.usuario.lastname}"></span></strong></div>
+                            <div>
+                                Pedido: <strong><span th:text="${#dates.format(pedido.fechaPedido, 'dd-MM-yyyy')}"></span></strong>
+                                <div style="display:inline;"  th:if="${pedido.fechaEntrega != null}"> | Entregado: <strong><span th:text="${#dates.format(pedido.fechaEntrega, 'dd-MM-yyyy')}"></span></strong></div>
+                            </div>
+
+
+                            <div style="width:50%">ID: <strong><span th:text="${pedido.id}"></span></strong></div>
+                            <div th:if="${pedido.fechaEntrega != null}" sec:authorize="hasRole('ROLE_ADMIN')">Estado: FINALIZADO</div> 
+
+                        </form>
+
+
+
+                        <a class="long-btn" th:href="@{'/orders/' + ${pedido.id}}">Ver detalle...</a>	      
+
+
+                        <div class="panel"></div>
+
+                    </div>
+                </div>
+
+
+
+
+
+            </div>  
+        </div>     
+
+
+
+        <script type="text/javascript" src="../js/accordion.js"></script>
+        <script type="text/javascript" src="../js/script.js"></script>
+    </body>
+</html>

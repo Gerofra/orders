@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/portal.css">
+</head>
+<body>
+    
+
+    <div class='bold-line'></div>
+    <div class='container'>
+      <div class='window-main'>
+      
+			    <div class="menu">
+		      		<div class="pages">
+		      			<div><a href="/portal" th:if="${session.usuariosession != null}" th:text="${'¡Hola, ' + session.usuariosession.name + '!'}"></a></div>
+		      			<div><a href="/orders">Pedidos</a></div>
+		      			<div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/products">Productos</a></div>
+		      			<div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users">Usuarios</a></div>
+		      			
+		      		</div>
+		      		
+		     		<div><span class='highlight'><a href="/logout">Salir</a></span></div>
+		      	</div>
+	      
+	        <div class='content'>
+	        
+				<div class='welcome' th:text="${codigo}">
+				</div>
+				
+			
+	         	<div class='subtitle' th:text="${msg}"></div>
+	          
+	          	
+  
+	        </div>
+	        
+      </div>
+    </div>
+
+
+
+</body>
+</html>
+
+

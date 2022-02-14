@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrar nuevo usuario</title>
+        <link rel="stylesheet" href="../css/login.css">
+        <link rel="stylesheet" href="../css/portal.css">
+        <script type="text/javascript" src="../js/script.js"></script>
+
+    </head>
+    <body>
+
+
+        <div class="topnav">
+            <div id="leftNav">
+                <div class="helloMsg"><a href="/" th:if="${session.usuariosession != null}" th:text="${'¡Hola, ' + session.usuariosession.name + '!'}"></a></div>
+            </div>
+
+            <a href="javascript:void(0);" class="icon" onclick="mobileNav()">
+                <p id="burga">|||</p>
+            </a>
+
+            <div id="myLinks">
+                <div><a href="/orders">Pedidos</a></div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/products">Productos</a></div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users">Usuarios</a></div>
+                <div><span class='highlight'><a href="/logout">Salir</a></span></div>
+            </div>
+        </div>
+
+
+        <div class='container'>
+
+            <div class="menu">
+                <div class="pages">
+                    <div><a href="/portal" th:if="${session.usuariosession != null}" th:text="${'¡Hola, ' + session.usuariosession.name + '!'}"></a></div>
+                    <div><a href="/orders">Pedidos</a></div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/products">Productos</a></div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users">Usuarios</a></div>
+
+                </div>
+
+                <div><span class='highlight'><a href="/logout">Salir</a></span></div>
+            </div>
+
+            <div class='window-users'>
+                <div class='content'>
+                    <div class='welcome'>Usuarios</div>
+                    <div class='input-fields'>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Área</th>
+                                    <th style="width:60px;"></th>
+                                    <th style="width:60px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>				        	
+                                <tr th:each="index, user : ${users}">
+                                    <td><span th:text="${user.index + 1}"> N </span></td>
+                                    <td><span th:text="${index.name}"> Nombre </span></td>
+                                    <td><span th:text="${index.lastname}"> Apellido </span></td>
+                                    <td><span th:text="${index.area}"> Área </span></td>
+
+
+                                    <td class="action-btns">
+                                        <div sec:authorize="hasRole('ROLE_ADMIN')"> 
+                                            <a th:href="@{/users/update} + '?id=' + ${index.id}"><img alt="" src="../img/preference.png" style="width:16px;"></a>
+                                        </div>
+                                    </td>
+                                    <td class="action-btns">
+                                        <div class="list-inline-item" sec:authorize="hasRole('ROLE_ADMIN')">  
+                                            <a th:href="@{/users/delete} + '?id=' + ${index.id}"><img alt="" src="../img/cancel.png" style="width:16px;"></a>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class='window-register'>
+                <div class='content'>
+
+                    <span th:classappend="${error} ? errorMsg : displayNone" th:text="${error}"></span>
+                    <span th:classappend="${success} ? successMsg : displayNone" th:text="${success}"></span>
+
+<div th:if="${userEdit == null}">
+                    <div class='welcome'>Registrar usuario</div>
+                    <div class='subtitle'>Ingrese los datos solicitados para registrar a un nuevo usuario.</div>
+                    
+                    <form id="formulario" th:action="@{/users/save}" method="POST">
+                        <div class='input-fields'>	
+
+                            <!--  Control contra ataques CSRF -->
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></input>
+
+                            <input type='text' placeholder='Nombre' class='input-line full-width' id="name" name="name">
+                            <input type='text' placeholder='Apellido' class='input-line full-width' id="lastname" name="lastname">
+                            <input type='email' placeholder='Mail' class='input-line full-width' id="mail" name="mail">
+                            <input type='password' placeholder='Contraseña' class='input-line full-width' id="password" name="password">
+                            <input type='text' placeholder='Área' class='input-line full-width' id="area" name="area">
+                        </div>
+                        <div><button type="submit" class='ghost-round full-width'>Registrar</button></div>
+                    </form>
+</div>
+
+<div th:if="${userEdit}">
+                    <div class='welcome'>Editar usuario</div>
+                    <div class='subtitle'>Ingrese los datos que desee modificar del usuario.</div>
+                    
+                    <form id="formulario" th:action="@{/users/saveUpdate}" method="POST" autocomplete="nope">
+                        <div class='input-fields'>	
+                            <!--  Control contra ataques CSRF -->
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></input>
+							<input type="hidden" name="id" th:value="${userEdit.id}"></input>
+							
+                            <input type='text' th:placeholder="${userEdit.name}" class='input-line full-width' id="name" name="name">
+                            <input type='text' th:placeholder="${userEdit.lastname}" class='input-line full-width' id="lastname" name="lastname">
+                            <input type='email' th:placeholder="${userEdit.mail}" class='input-line full-width' id="mail" name="mail">
+                            <input type='password' placeholder='******' class='input-line full-width' id="password" name="password">
+                            <input type='text' th:placeholder="${userEdit.area}" class='input-line full-width' id="area" name="area">
+                        </div>
+                        <div><button type="submit" class='ghost-round full-width'>Editar</button></div>
+                    </form>
+</div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </body>
+</html>
+
+
+
+
+
+

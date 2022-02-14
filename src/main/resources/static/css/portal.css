@@ -1,0 +1,237 @@
+* {
+	box-sizing: border-box;
+}
+
+.menu {
+  	width: 100%;
+  	max-width: 900px;
+	display: flex;
+	justify-content:space-between;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 16px 30px;
+	font-weight: 100;
+	font-size: 1.2em;
+
+}
+
+.topnav {
+    display: none;
+}
+
+.pages {
+	display: flex;
+	justify-content:flex-start;
+	width: 80%;
+}
+
+.pages div {
+	margin-right: 30px;
+}
+
+a:link,a:visited,a:hover,a:active {
+  text-decoration: none;
+  color:white;
+}
+
+a:hover {
+	font-weight: 400;
+}
+
+
+.order {
+    margin-bottom: 15px;
+}
+
+
+  
+.danger {
+    background-color: #ffdddd;
+    opacity: 0.9;
+    border-left: 6px solid #f44336;
+}
+  
+.success {
+    background-color: #ddffdd;
+    opacity: 0.9;
+    border-left: 6px solid #04AA6D;
+}
+  
+.info {
+    background-color: #e7f3fe;
+    opacity: 0.9;
+    border-left: 6px solid #2196F3;
+}
+  
+  
+.warning {
+    background-color: #ffffcc;
+    opacity: 0.9;
+    border-left: 6px solid #ffeb3b;
+}
+
+
+.portada-buscador {
+	display: flex;
+	align-items:center;
+	justify-content: space-around;
+	margin-bottom: 20px;
+	margin-top: 30px;
+}
+
+.portada-buscador .welcome {
+	margin-top: 0px;
+	width: 60%;
+	text-align: left;
+	line-height: 46px;
+}
+
+.portada-buscador .buscador {
+	height: 36px;
+}
+
+/*BUSCADOR*/
+.search-box{
+	opacity: 0.7;
+}
+
+form.search-box input[type=text] {
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #262626;
+  color: #444;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+  height: 36px;
+}
+
+form.search-box input::placeholder {
+	color: #444;
+	opacity: 0.4;
+}
+
+form.search-box button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #444;
+  color: white;
+  border: 1px solid #262626;
+  border-left: none;
+  cursor: pointer;
+  height: 36px;
+}
+
+form.search-box button:hover {
+  background: #000;
+}
+
+form.search-box::after {	
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+.estado-pedido {
+	line-height: 50px;
+	opacity:0.6;
+}
+
+.accordion {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #444;
+  cursor: pointer;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+}
+
+
+.action-btns img {
+	cursor: pointer;
+	margin: 0 2px;
+	opacity: 0.3;
+	transition: 0.2s;
+}
+
+.action-btns img:hover {
+	opacity: 1;
+	transition: 0.2s;
+}
+
+
+@media (max-width: 600px) {
+	.portada-buscador {
+	margin-top: 66px;
+	}
+
+	.menu {
+        display: none;
+    }
+    
+	#burga {
+        transform: rotate(90deg);
+    }
+
+
+    .topnav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        background-color: rgba(34, 34, 34, 0.8);
+        position: fixed;
+        z-index: 10;
+		line-height: 0px;
+    }
+
+    #leftNav {
+        width: calc(100% - 44px);
+    }
+   
+    .topnav #myLinks {
+        width: 100%;
+        display: none;
+        line-height: 20px;
+    }
+      
+    .topnav a {
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight:100;
+        display: block;
+    }
+      
+    .topnav a.icon {
+        width: 44px;
+        background: rgba(0, 0, 0, 0.9);
+        transition: 0.3s;
+
+    }
+      
+    .topnav a:hover {
+        background-color: rgba(255, 248, 220, 0.5);
+        color: black;
+        transition: 0.3s;
+    }
+}

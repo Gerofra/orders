@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bienvenido</title>
+        <link rel="stylesheet" href="../css/login.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    </head>
+    <body>
+
+
+
+
+        <div sec:authorize="!isAuthenticated()" class='container-index'>
+            <div class='window-login'>
+                <div class='content'>
+                    <div class='welcome'>¡Bienvenido!</div>
+                    <div class='subtitle'>Para poder utilizar el servicio debes ingresar con tu cuenta.</div>
+
+
+                    <span th:classappend="${error} ? errorMsg : displayNone" th:text="${error}"></span>
+                    <span th:classappend="${logout} ? successMsg : displayNone" th:text="${logout}"></span>
+
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" th:if="${error}">
+                        <span th:text="${error}"></span>
+                    </div>
+
+
+                    <form th:action="@{/logincheck}" method="POST">
+                        <div class='input-fields'>
+                            <input type='email' placeholder='Mail' class='input-line full-width' name="mail"></input>
+                            <input type='password' placeholder='Contraseña' class='input-line full-width' name="password"></input>
+
+                            <label class="checkbox">Recordarme
+                                <input type="checkbox" value="remember-me" class='input-line full-width' name="checkRememberMe"> 
+                                <span class="checkmark"></span>
+                            </label>
+
+                        </div>
+
+                        <div><button type="submit" class='ghost-round full-width'>Ingresar</button></div>
+                        <div class='spacing'><span class='highlight'>Olvidé mi contraseña</span></div>
+                    </form>    
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </body>
+</html>
