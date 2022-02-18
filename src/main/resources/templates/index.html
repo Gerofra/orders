@@ -23,7 +23,8 @@
 
                     <span th:classappend="${error} ? errorMsg : displayNone" th:text="${error}"></span>
                     <span th:classappend="${logout} ? successMsg : displayNone" th:text="${logout}"></span>
-
+					<span class="successMsg">Mail: geronimopericoli@gmail.com <br>Password: admin</span>
+					
                     <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" th:if="${error}">
                         <span th:text="${error}"></span>
                     </div>
